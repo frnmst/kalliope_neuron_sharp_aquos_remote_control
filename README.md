@@ -47,7 +47,7 @@ of the underlying python API.
 
 ## Synapses and templates example
 
-Have a look at the `brain.yml` and `./template.j2` files
+Have a look at the `./brain.yml` and `./template.j2` files
 
 ## TODO
 
