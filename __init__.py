@@ -1,0 +1,1 @@
+from sharp_aquos_remote_control import Sharp_aquos_remote_control

@@ -1,0 +1,14 @@
+{% if powerstatus == 0 %}
+La televisione è spenta
+{% elif powerstatus == 1%}
+La televisione è accesa
+{% elif powerstatus == -1 %}
+Impossibile stabilire lo stato della televisione
+{% endif %}
+
+{% if actionsuccessful == True %}
+Il televisore ha eseguito il comando con successo
+{% elif actionsuccessful == False %}
+Non si è stati in grado di eseguire il comando sul televisore
+{% endif %}
+

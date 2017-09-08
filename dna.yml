@@ -1,0 +1,14 @@
+---
+  # must match the entry  point class name
+  name: "sharp_aquos_remote_control"
+  type: "neuron"
+  author: "Franco Masotti"
+
+  kalliope_supported_version: 
+    - 0.4
+
+  tags:
+    - "tv"
+    - "sharp"
+    - "aquos"
+    - "remote"
