@@ -57,6 +57,7 @@ Have a look at the `brain.yml` and `./template.j2` files
 - Finish all the commands
 - Fix neuron controls
 - Add neuron tests
+- Test installation
 - General cleaning
 
 ## Copyright and License
