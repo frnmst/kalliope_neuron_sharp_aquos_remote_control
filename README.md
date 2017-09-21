@@ -37,14 +37,14 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | sleep                  | set the standby timer for the specified minutes  |   yes               | "30", use "0" to disable  | 
 | remote_button_seq      | imitate the pressing of buttons on the remote    |   yes               | "['menu','left','enter']" |
 
-| Query parameters accepted values  |
-|-----------------------------------|
-| '0' <= volume <= '60'             |
-| 1 <= digital_channel_cable <= 999 |
-| '100' <= teletext_jump <= 899     |
-| input =  see https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob//master/sharp_aquos_rc/commands/eu.yaml , the `input` section.   |
+| Query parameters accepted values    |
+|-------------------------------------|
+| '0' <= volume <= '60'               |
+| 1 <= digital_channel_cable <= '999' |
+| '100' <= teletext_jump <= 899       |
+| input =  see the [python API](https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml) , the `input` section.   |
 | sleep = {0,30,60,90,120}          |
-| remote_button_seq = see https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml , the `remote` section. |
+| remote_button_seq = see [python API](https://github.com/sharp-aquos-remote-control/blob/master/sharp_aquos_rc/commands/eu.yaml) , the `remote` section. |
 
 ## Return Values
 
