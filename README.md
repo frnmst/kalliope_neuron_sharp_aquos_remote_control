@@ -21,16 +21,25 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | query         | depends  |         |                           |   str
 | file_template | no       |         |                           |   str
 
+* Please note that all query values are of the `str` Python type." *
 
-| Actions                   | Description                               | query parm required | query parm |
-|---------------------------|-------------------------------------------|---------------------|------------|
-| tv_on                     | power on the television                   |   no                |            |
-| tv_off                    | power off the television                  |   no                |            |
-| tv_status                 | check the status of the television        |   no                |            |
-| tv_volume                 | set volume to the specified value         |   yes               |            |
-| tv_mute_toggle            | toggle mute                               |   no                |            |
-| tv_digital_channel_cable  | change channel to the specified value     |   yes               |            |
-| ... | | |
+| Actions                | Description                                      | query parm required | query parm example        |
+|------------------------|--------------------------------------------------|---------------------|---------------------------|
+| on                     | power on the television                          |   no                |                           |
+| off                    | power off the television                         |   no                |                           |
+| status                 | check the status of the television               |   no                |                           |
+| volume                 | set volume to the specified value                |   yes               | '10'                      |
+| mute_toggle            | toggle mute                                      |   no                |                           |
+| digital_channel_cable  | change channel to the specified value            |   yes               | '50'                      |
+| teletext_toggle        | enable the teletext                              |   no                |                           |
+| teletext_jump          | jump to the specified teletext page              |   yes               | '103'                     |
+| input                  | change to the specified source                   |   yes               | "hdmi 1"                  |
+| sleep                  | set the standby timer for the specified minutes  |   yes               | "30", use "0" to disable  | 
+| remote_button_seq      | imitate the pressing of buttons on the remote    |   yes               | "['menu','left','enter']" |
+
+* For the full list of the possible remote_button_seq commands,
+have a look at https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml
+in the `remote` section. *
 
 ## Return Values
 
@@ -51,12 +60,15 @@ Have a look at the `./brain.yml` and `./template.j2` files
 
 ## TODO
 
+- Try what happens if i say: "Television channel" (ie when channel, volume, etc...
+  is not specified).
 - Fix documentation
 - Multi language templates
-- Define the commands better
+- How to specify automatically when to use
+  digital_channel_cable or digital_channel_air
 - Finish all the commands
 - Fix neuron controls
-- Add neuron tests
+- Add neuron tests (and find a way to run them the "correct" way).
 - Test installation
 - General cleaning
 
