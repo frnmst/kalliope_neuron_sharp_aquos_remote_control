@@ -21,9 +21,9 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | query         | depends  |         |                           |   str
 | file_template | no       |         |                           |   str
 
-* Please note that all query values are of the `str` Python type." *
+*Please note that all query values are of the `str` Python type."*
 
-| Actions                | Description                                      | query parm required | query parm example        |
+| Actions                | Description                                      | query parameter required | query parameter example        |
 |------------------------|--------------------------------------------------|---------------------|---------------------------|
 | on                     | power on the television                          |   no                |                           |
 | off                    | power off the television                         |   no                |                           |
@@ -37,9 +37,9 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | sleep                  | set the standby timer for the specified minutes  |   yes               | "30", use "0" to disable  | 
 | remote_button_seq      | imitate the pressing of buttons on the remote    |   yes               | "['menu','left','enter']" |
 
-* For the full list of the possible remote_button_seq commands,
+*For the full list of the possible remote_button_seq commands,
 have a look at https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml
-in the `remote` section. *
+in the `remote` section.*
 
 ## Return Values
 
