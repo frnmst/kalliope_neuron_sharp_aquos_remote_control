@@ -42,9 +42,9 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | '0' <= volume <= '60'               |
 | 1 <= digital_channel_cable <= '999' |
 | '100' <= teletext_jump <= 899       |
-| input =  see the [python API](https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml) , the `input` section.   |
+| input =  see the [python API](https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml) , `input` section.   |
 | sleep = {0,30,60,90,120}          |
-| remote_button_seq = see [python API](https://github.com/sharp-aquos-remote-control/blob/master/sharp_aquos_rc/commands/eu.yaml) , the `remote` section. |
+| remote_button_seq = see the [python API](https://github.com/sharp-aquos-remote-control/blob/master/sharp_aquos_rc/commands/eu.yaml) , `remote` section. |
 
 ## Return Values
 
