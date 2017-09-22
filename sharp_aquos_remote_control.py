@@ -30,6 +30,8 @@ logger = logging.getLogger("kalliope")
 
 
 class Sharp_aquos_remote_control(NeuronModule):
+    # Pass a variable number of arguments to this method (see kwargs).
+    # It's like argv in C. It means keyworded.
     def __init__(self, **kwargs):
         super(Sharp_aquos_remote_control, self).__init__(**kwargs)
 
@@ -44,6 +46,7 @@ class Sharp_aquos_remote_control(NeuronModule):
             "query": kwargs.get('query', None)
         }
 
+
         self.init_sharp_tv_client()
 
         power_status = None
@@ -52,38 +55,57 @@ class Sharp_aquos_remote_control(NeuronModule):
         # check parameters
         if self._is_parameters_ok():
             try:
-
-                if self.configuration['action'] == "tv_on":
-                    logger.debug("Sharp TV Action: tv_on")
+                if self.configuration['action'] == "on":
+                    logger.debug("Sharp TV Action: on")
                     success = self.sharp_tv_action_on()
 
-                elif self.configuration['action'] == "tv_off":
-                    logger.debug("Sharp TV Action: tv_off")
+                elif self.configuration['action'] == "off":
+                    logger.debug("Sharp TV Action: off")
                     success = self.sharp_tv_action_off()
 
-                elif self.configuration['action'] == "tv_status":
-                    logger.debug("Sharp TV Action: tv_status")
+                elif self.configuration['action'] == "status":
+                    logger.debug("Sharp TV Action: status")
                     power_status = self.sharp_tv_action_status()
 
-                elif self.configuration['action'] == "tv_volume":
-                    logger.debug("Sharp TV Action: tv_volume")
+                elif self.configuration['action'] == "volume":
+                    logger.debug("Sharp TV Action: volume")
                     success = self.sharp_tv_action_volume()
 
-                elif self.configuration['action'] == "tv_digital_channel_cable":
-                    logger.debug("Sharp TV Action: tv_digital_channel_cable")
+                elif self.configuration['action'] == "digital_channel_cable":
+                    logger.debug("Sharp TV Action: digital_channel_cable")
                     success = self.sharp_tv_action_digital_channel_cable()
 
-                elif self.configuration['action'] == "tv_mute_toggle":
-                    logger.debug("Sharp TV Action: tv_mute_toggle")
+                elif self.configuration['action'] == "mute_toggle":
+                    logger.debug("Sharp TV Action: mute_toggle")
                     success = self.sharp_tv_action_mute_toggle()
+
+                elif self.configuration['action'] == "channel_up":
+                    logger.debug("Sharp TV Action: channel_up")
+                    success = self.sharp_tv_action_channel_up()
+
+                elif self.configuration['action'] == "channel_down":
+                    logger.debug("Sharp TV Action: channel_down")
+                    success = self.sharp_tv_action_channel_down()
+
+                elif self.configuration['action'] == "mute_toggle":
+                    logger.debug("Sharp TV Action: mute_toggle")
+                    success = self.sharp_tv_action_mute_toggle()
+
+                elif self.configuration['action'] == "teletext_jump":
+                    logger.debug("Sharp TV Action: teletext_jump")
+                    success = self.sharp_tv_action_teletext_jump()
+
+                elif self.configuration['action'] == "teletext_toggle":
+                    logger.debug("Sharp TV Action: teletext_toggle")
+                    success = self.sharp_tv_action_teletext_toggle()
 
                 else:
                     logger.debug("Sharp TV Action: Not found")
 
             except Exception as e:
-                # Television is offline.
+                # Television is offline. FIXME: this is ugly.
                 success = False
-                if self.configuration['action'] ==  "tv_status":
+                if self.configuration['action'] ==  "status":
                     power_status = -1
                     success = None
                 logger.debug(e)
@@ -91,8 +113,8 @@ class Sharp_aquos_remote_control(NeuronModule):
             status = "...Param error..."
 
         message = {
-            'actionsuccessful': success,
-            'powerstatus': power_status
+            'action_successful': success,
+            'power_status': power_status
         }
 
         self.say(message)
@@ -143,9 +165,58 @@ class Sharp_aquos_remote_control(NeuronModule):
 
         return results
 
+    def sharp_tv_channel_up(self):
+
+        results = self.client.channel_up()
+
+        return results
+
+    def sharp_tv_channel_down(self):
+
+        results = self.client.channel_down()
+
+        return results
+
     def sharp_tv_action_mute_toggle(self):
 
         results = self.client.mute(0)
+
+        return results
+
+    def sharp_tv_action_teletext_jump(self):
+
+        # Reset status and call teletext
+        results = (self.client.teletext(0) and self.client.teletext(1)
+            and self.client.teletext_jump(self.configuration['query']))
+
+        return results
+
+    def sharp_tv_action_teletext_toggle(self):
+
+        results = self.client.teletext(1)
+
+        return results
+
+    def sharp_tv_action_sleep(self):
+
+        if self.configuration['query'] == 0:
+	        results = self.client.sleep(0)
+        elif self.configuration['query'] == 30:
+	        results = self.client.sleep(1)
+        elif self.configuration['query'] == 60:
+	        results = self.client.sleep(2)
+        elif self.configuration['query'] == 90:
+	        results = self.client.sleep(3)
+        elif self.configuration['query'] == 120:
+	        results = self.client.sleep(4)
+
+        return results
+
+    def sharp_tv_action_remote_button_seq(self):
+
+        results = True
+        for button in self.configuration['query']:
+            results = results and self.client.remote_button(button)
 
         return results
 
@@ -156,20 +227,42 @@ class Sharp_aquos_remote_control(NeuronModule):
         .. raises:: InvalidParameterException
         """
 
+        # Check simple parameters.
         if self.configuration['ip_address'] is None:
             raise InvalidParameterException("Sharp Aquos Remote needs an ip address")
         if self.configuration['port'] is None:
             raise InvalidParameterException("Sharp Aquos Remote needs a port")
+        if self.configuration['username'] is None:
+            raise InvalidParameterException("Sharp Aquos Remote needs a username")
+        if self.configuration['password'] is None:
+            raise InvalidParameterException("Sharp Aquos Remote needs a password")
 
+        # Check that the query is not empty for some corresponding actions.
         if self.configuration['action'] is None:
-            raise InvalidParameterException("Invaliad action")
+            raise InvalidParameterException("Sharp Aquos Remote requires a valid action")
+        elif self.configuration['action'] in ['volume', 'digital_channel_cable', 'teletext_jump','sleep']:
+            if self.configuration['query'] is None:
+                raise InvalidParameterException("Sharp Aquos Remote requires a query for this action")
+        elif self.configuration['action'] in ['on','off']:
+            pass
+        else:
+            raise InvalidParameterException("Sharp Aquos Remote requires a valid action")
 
-        elif (self.configuration['action'] in ['tv_volume', 'tv_digital_channel_cable']
-            and self.configuration['query'] is None):
-            raise InvalidParameterException("Sharp Aquos Remote requires a query for this action")
+        if self.configuration['action'] == 'teletext_jump':
+            if self.configuration['query'] < 100 or self.configuration['query'] > 899:
+                raise InvalidParameterException("Sharp Aquos Remote requires a page index between \
+                                                100 and 899 to do the teletext jump")
 
-#        if (self.configuration['action'] in ['mute']
-#            and self.configuration['query'] not in [0, 1, 2]):
-#            raise InvalidParameterException("Sharp Aquos Remote requires a value of 0, 1 or 2 for this action")
+        # Check the command map.
+        if self.configuration['command_map'] is None:
+            raise InvalidParameterException("Sharp Aquos Remote needs a valid command map")
+        elif self.configuration['command_map'] not in ['eu','jp','us','cn']:
+            raise InvalidParameterException("Sharp Aquos Remote needs a valid command map")
+
+
+        # Check the sleep parameters.
+        if self.configuration['action'] == 'sleep':
+            if self.configuration['query'] not in ['0', '30', '60', '90', '120']:
+                raise InvalidParameterException("Sharp Aquos Remote requires a valid sleep timer time.")
 
         return True

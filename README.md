@@ -50,8 +50,8 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 
 | Name               | Description         | Python data type | Return codes |
 ---------------------|---------------------|------------------|--------------|
-| powerstatus        | Tells respectively if the tv is unreachable, turned off or powered on | int | -1, 0, 1 |
-| actionsuccessful   | Tells if the last action was successful. This is not available for the tv_status action | boolean | True, False |
+| power_status        | Tells respectively if the tv is unreachable, turned off or powered on | int | -1, 0, 1 |
+| action_successful   | Tells if the last action was successful. This is not available for the tv_status action | boolean | True, False |
 
 ## Python API
 

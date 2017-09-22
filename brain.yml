@@ -4,7 +4,7 @@
     - order: "accendi il televisore"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_on"
+        action: "on"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
@@ -18,7 +18,7 @@
     - order: "spegni il televisore"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_off"
+        action: "off"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
@@ -32,7 +32,7 @@
     - order: "televisore volume {{ volume }}"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_volume"
+        action: "volume"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
@@ -47,7 +47,7 @@
     - order: "televisore canale {{ canale }}"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_digital_channel_cable"
+        action: "digital_channel_cable"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
@@ -62,7 +62,7 @@
     - order: "stato del televisore"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_status"
+        action: "status"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
@@ -76,7 +76,7 @@
     - order: "televisore interruttore muto"
   neurons:
     - sharp_aquos_remote_control:
-        action: "tv_mute_toggle"
+        action: "mute_toggle"
         command_map: "eu"
         ip_address: "192.168.1.1"
         port: 10002
