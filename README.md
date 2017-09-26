@@ -2,7 +2,8 @@
 
 ## Synopsis
 
-Execute vocal commands on certain models of Sharp Aquos televisions.
+Use your voice to control certain models of [Sharp Aquos](https://sharp-aquos-remote-control.github.io/index.html) televisions, 
+using the free software vocal assistant [Kalliope](https://github.com/kalliope-project/kalliope)
 
 ## Installation
 
@@ -30,17 +31,21 @@ Execute vocal commands on certain models of Sharp Aquos televisions.
 | status                 | check the status of the television               |   no                |                           |
 | volume                 | set volume to the specified value                |   yes               | '10'                      |
 | mute_toggle            | toggle mute                                      |   no                |                           |
-| digital_channel_cable  | change channel to the specified value            |   yes               | '50'                      |
 | teletext_toggle        | enable the teletext                              |   no                |                           |
 | teletext_jump          | jump to the specified teletext page              |   yes               | '103'                     |
 | input                  | change to the specified source                   |   yes               | "hdmi 1"                  |
 | sleep                  | set the standby timer for the specified minutes  |   yes               | "30", use "0" to disable  | 
 | remote_button_seq      | imitate the pressing of buttons on the remote    |   yes               | "['menu','left','enter']" |
+| tv_analog              | change analog channel to the specified value     |   yes               | '50'                      |
+| tv_digital             | change digital (terrestrial or cable, depending on the command_map option) to the specified value            |   yes               | '50'                      |
+| tv_satellite           | change satellite channel to the specified value  |   yes               | '50'                      |
 
 | Query parameters accepted values      |
 |---------------------------------------|
 | '0' <= volume <= '60'                 |
-| '1' <= digital_channel_cable <= '999' |
+| '1' <= tv_analog <= '135'             |
+| '1' <= tv_digital <= '999'            |
+| '1' <= tv_satellite <= ???            |
 | '100' <= teletext_jump <= '899'       |
 | input =  see the [python API](https://github.com/sharp-aquos-remote-control/sharp_aquos_rc/blob/master/sharp_aquos_rc/commands/eu.yaml) , `input` section.   |
 | sleep = {'0','30','60','90','120'}    |
@@ -68,11 +73,9 @@ Have a look at the `./brain.yml` and `./template.j2` files
 - Try what happens if i say: "Television channel" (ie when channel, volume, etc...
   is not specified).
 - Fix documentation
-- Multi language templates
-- How to specify automatically when to use
-  digital_channel_cable or digital_channel_air
+- Add and fix tests
+- Multi language templates (at least add the english language)
 - Finish all the commands
-- Fix neuron controls
 - Add neuron tests (and find a way to run them the "correct" way).
 - Test installation
 - General cleaning

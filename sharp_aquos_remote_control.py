@@ -35,7 +35,7 @@ class Sharp_aquos_remote_control(NeuronModule):
     def __init__(self, **kwargs):
         super(Sharp_aquos_remote_control, self).__init__(**kwargs)
 
-        # get parameters form the neuron
+        # Get parameters form the neuron.
         self.configuration = {
             "action": kwargs.get('action', None),
             "command_map": kwargs.get('command_map', 'eu'),
@@ -71,10 +71,6 @@ class Sharp_aquos_remote_control(NeuronModule):
                     logger.debug("Sharp TV Action: volume")
                     success = self.sharp_tv_action_volume()
 
-                elif self.configuration['action'] == "digital_channel_cable":
-                    logger.debug("Sharp TV Action: digital_channel_cable")
-                    success = self.sharp_tv_action_digital_channel_cable()
-
                 elif self.configuration['action'] == "mute_toggle":
                     logger.debug("Sharp TV Action: mute_toggle")
                     success = self.sharp_tv_action_mute_toggle()
@@ -98,6 +94,24 @@ class Sharp_aquos_remote_control(NeuronModule):
                 elif self.configuration['action'] == "teletext_toggle":
                     logger.debug("Sharp TV Action: teletext_toggle")
                     success = self.sharp_tv_action_teletext_toggle()
+
+                elif self.configuration['action'] == "tv_analog":
+                    logger.debug("Sharp TV Action: tv_analog")
+                    success = self.sharp_tv_action_tv_analog()
+
+                elif self.configuration['action'] == 'tv_digital':
+                    if self.configuration['profile'] in ['eu','cn','jp']:
+                        success = self.sharp_tv_action_dvbt()
+                    # us
+                    else:
+                        success = self.sharp_tv_action_cable()
+                        
+                elif self.configuration['action'] == 'tv_satellite':
+                    if self.configuration['profile'] in ['eu','cn','jp']:
+                        success = self.sharp_tv_action_satellite()
+                    # us
+                    else:
+                        success = self.sharp_tv_action_satellite_us()
 
                 else:
                     logger.debug("Sharp TV Action: Not found")
@@ -137,80 +151,54 @@ class Sharp_aquos_remote_control(NeuronModule):
 
     def sharp_tv_action_on(self):
 
-        results = self.client.power(1)
-
-        return results
+        return self.client.power(1)
 
     def sharp_tv_action_off(self):
 
-        results = self.client.power(0)
-
-        return results
+        return self.client.power(0)
 
     def sharp_tv_action_status(self):
 
-        results = self.client.power()
-
-        return results
+        return self.client.power()
 
     def sharp_tv_action_volume(self):
 
-        results = self.client.volume(self.configuration['query'])
-
-        return results
-
-    def sharp_tv_action_digital_channel_cable(self):
-
-        results = self.client.digital_channel_cable(self.configuration['query'])
-
-        return results
+        return self.client.volume(self.configuration['query'])
 
     def sharp_tv_channel_up(self):
 
-        results = self.client.channel_up()
-
-        return results
+        return self.client.channel_up()
 
     def sharp_tv_channel_down(self):
 
-        results = self.client.channel_down()
-
-        return results
+        return self.client.channel_down()
 
     def sharp_tv_action_mute_toggle(self):
 
-        results = self.client.mute(0)
-
-        return results
+        return self.client.mute(0)
 
     def sharp_tv_action_teletext_jump(self):
 
         # Reset status and call teletext
-        results = (self.client.teletext(0) and self.client.teletext(1)
+        return (self.client.teletext(0) and self.client.teletext(1)
             and self.client.teletext_jump(self.configuration['query']))
-
-        return results
 
     def sharp_tv_action_teletext_toggle(self):
 
-        results = self.client.teletext(1)
-
-        return results
+        return self.client.teletext(1)
 
     def sharp_tv_action_sleep(self):
 
         if self.configuration['query'] == 0:
-	        results = self.client.sleep(0)
+	        return self.client.sleep(0)
         elif self.configuration['query'] == 30:
-	        results = self.client.sleep(1)
+	        return self.client.sleep(1)
         elif self.configuration['query'] == 60:
-	        results = self.client.sleep(2)
+	        return self.client.sleep(2)
         elif self.configuration['query'] == 90:
-	        results = self.client.sleep(3)
+	        return self.client.sleep(3)
         elif self.configuration['query'] == 120:
-	        results = self.client.sleep(4)
-
-        return results
+	        return self.client.sleep(4)
 
     def sharp_tv_action_remote_button_seq(self):
 
@@ -220,11 +208,30 @@ class Sharp_aquos_remote_control(NeuronModule):
 
         return results
 
+    # This command is the same for all 4 command maps.
+    def sharp_tv_action_tv_analog(self):
+
+        return self.client.analog_channel(self.configuration['query'])
+
+    def sharp_tv_action_satellte(self):
+
+        return self.client.digital_channel_air(self.configuration['query'])
+
+    def sharp_tv_action_satellite_us(self):
+
+        # Unimplemented.
+        return False
+
+
+    ###                    ###
+    ### Parameter controls ###
+    ###                    ###
+
     def _is_parameters_ok(self):
-        """
-        Check if received parameters are ok to perform operations in the neuron
-        :return: true if parameters are ok, raise an exception otherwise
-        .. raises:: InvalidParameterException
+
+        """ Check if received parameters are ok to perform operations in the neuron
+            :return: true if parameters are ok, raise an exception otherwise
+            .. raises:: InvalidParameterException
         """
 
         # Check simple parameters.
@@ -240,7 +247,13 @@ class Sharp_aquos_remote_control(NeuronModule):
         # Check that the query is not empty for some corresponding actions.
         if self.configuration['action'] is None:
             raise InvalidParameterException("Sharp Aquos Remote requires a valid action")
-        elif self.configuration['action'] in ['volume', 'digital_channel_cable', 'teletext_jump','sleep']:
+        elif self.configuration['action'] in ['volume',
+                                              'tv_analog',
+                                              'tv_digital',
+                                              'tv_satellite',
+                                              'teletext_jump',
+                                              'sleep',
+                                              'remote_button_seq']:
             if self.configuration['query'] is None:
                 raise InvalidParameterException("Sharp Aquos Remote requires a query for this action")
         elif self.configuration['action'] in ['on','off']:
