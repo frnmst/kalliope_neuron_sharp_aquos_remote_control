@@ -68,18 +68,6 @@ of the underlying python API.
 
 Have a look at the `./brain.yml` and `./template.j2` files
 
-## TODO
-
-- Try what happens if i say: "Television channel" (ie when channel, volume, etc...
-  is not specified).
-- Fix documentation
-- Add and fix tests
-- Multi language templates (at least add the english language)
-- Finish all the commands
-- Add neuron tests (and find a way to run them the "correct" way).
-- Test installation
-- General cleaning
-
 ## Copyright and License
 
 Copyright (c) 2017, Franco Masotti
